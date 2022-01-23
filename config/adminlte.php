@@ -260,6 +260,12 @@ return [
             //'can'  => 'manage-blog',
         ],
         [
+            'text' => 'QR Codes',
+            'url'  => 'qr_codes',
+            'icon' => 'fas fa-qrcode',
+            //'can'  => 'manage-blog',
+        ],
+        [
             'text' => 'Users',
             'url'  => 'users',
             'icon' => 'fas fa-users',

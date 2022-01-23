@@ -19,6 +19,18 @@ class RecycleOrderController extends Controller
     public function index()
     {
         $orders = RecycleOrder::all();
+        $catLabel = null;
+        $status = null;
+        foreach ($orders as $order) {
+            if (!isset($catLabel)) {
+                $qr = QrCode::where('recycle_order_id', $order->id)->first();
+                $cat = $this->getRcyCat($qr);
+                $catLabel = $this->getCatLabel($cat->category);
+                $status = $this->getStatus($qr->status);
+            }
+            $order['catLabel'] = $catLabel;
+            $order['status'] = $status;
+        }
         return view('recycle_orders', ['orders' => $orders]);
     }
 
@@ -64,6 +76,10 @@ class RecycleOrderController extends Controller
     public function show($id)
     {
         $order = RecycleOrder::where('id', $id)->first();
+        $qr = QrCode::where('recycle_order_id', $order->id)->first();
+        $cat = $this->getRcyCat($qr);
+        $order['catLabel'] = $this->getCatLabel($cat->category);
+        $order['status'] = $this->getStatus($qr->status);
         return view('recycle_order', ['order' => $order]);
     }
 
@@ -107,5 +123,21 @@ class RecycleOrderController extends Controller
     {
         $order = RecycleOrder::where('id', $id)->first();
         return view('print_qr_code', ['order' => $order]);
+    }
+
+    private function getRcyCat($qr) {
+        $cat = OrderCategory::where('id', $qr->order_category_id-10000000)->first();
+        return $cat;
+    }
+
+    private function getCatLabel($category) {
+        return SystemConfig::where('type', 'CAT')
+                    ->where('key', $category)
+                    ->first()
+                    ->{'value'};
+    }
+
+    private function getStatus($status) {
+        return SystemConfig::getAllStatus()[$status];
     }
 }

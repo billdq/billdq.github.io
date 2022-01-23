@@ -46,7 +46,7 @@
 <script>
 $(document).ready(function() {
     var table = $('#table1').DataTable({
-        searching: false,
+        searching: true,
     });
 
 });
@@ -68,6 +68,7 @@ function del(url) {
         },
         success: function(result) {
             console.log('Delete response: ' + result);
+            alert('Delete success!');
             location.href = '/cats';
         }
     });

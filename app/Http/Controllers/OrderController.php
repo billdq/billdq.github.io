@@ -114,6 +114,39 @@ class OrderController extends Controller
     }
 
     public function destroy($id) {
-        return $id;
+        $order = Order::where('id', $id)->first();
+        if ($order) {
+            $orderCats = $order->order_categories;
+            foreach ($orderCats as $cat) {
+                $cat->qr_codes()->delete();
+            }
+            $order->order_categories()->delete();
+            $order->delete();
+        }
+        return "success";
+    }
+
+    public function completed()
+    {
+        $all = Order::all();
+        $orders = array();
+        foreach ($all as $order) {
+            if ($this->isCompleted($order)) {
+                array_push($orders, $order);
+            }
+        }
+        return view('completed_orders', ['orders' => $orders]);
+    }
+
+    private function isCompleted($order) {
+        $s = SystemConfig::getCompletedStatus();
+        $orderCats = $order->order_categories;
+        foreach ($orderCats as $cat) {
+            $count = $cat->qr_codes()->where('status', '!=', $s)->count();
+            if ($count > 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }

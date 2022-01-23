@@ -18,6 +18,12 @@ class SystemConfig extends Model
         return SystemConfig::where('type', 'STATUS')->get();
     }
 
+    public static function getCompletedStatus() {
+        $status = SystemConfig::where('type', 'COMPLETED_STATUS')
+            ->first()->{'value'};
+        return $status;
+    }
+
     public static function getRecycleStatus() {
         $status = SystemConfig::where('type', 'RECYCLE_STATUS')
             ->first();

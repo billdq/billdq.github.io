@@ -36,6 +36,16 @@
         <small id="dateHelp" class="form-text text-muted">請輸入YYYY-MM-DD</small>
     </div>
 
+    <div class="form-group">
+        <label for="category">Category</label>
+        <input type="text" name="category" class="form-control col-md-8" id="category" placeholder="">
+    </div>
+
+    <div class="form-group">
+        <label for="status">Status</label>
+        <input type="text" name="status" class="form-control col-md-8" id="status" placeholder="">
+    </div>
+
     <div class="col-md-8">
         <button id="qr_code_btn" type="button" class="btn btn-success float-right ml-3">QR Code</button>
         <button class="btn btn-primary float-right">Submit</button>
@@ -84,6 +94,8 @@ $(document).ready(function() {
     @if(isset($order))
     fillOrder();
     @endif
+    $("#category").attr("disabled", "disabled");
+    $("#status").attr("disabled", "disabled");
 });
 
 @if(isset($order))
@@ -92,6 +104,8 @@ function fillOrder() {
     $("#weight").val("{{ $order->weight }}");
     $("#amount").val("{{ $order->amount }}");
     $("#date").val("{{ $order->date->format('Y-m-d') }}");
+    $("#category").val("{{ $order->catLabel }}");
+    $("#status").val("{{ $order->status }}");
 
     $("#amount").attr("disabled", "disabled");
 }

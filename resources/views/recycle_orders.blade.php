@@ -7,6 +7,21 @@
 @stop
 
 @section('content')
+<div class="form-group row col-md-8">
+    <div class="form-inline col-md-4">
+        <input type="text" name="from_date" class="form-control" id="from_date" aria-describedby="fromDateHelp"
+                placeholder="From date">
+        <small id="fromDateHelp" class="form-text text-muted">請輸入YYYY-MM-DD</small>
+    </div>
+    <div class="form-inline col-md-4">
+        <input type="text" name="to_date" class="form-control" id="to_date" aria-describedby="toDateHelp"
+                placeholder="To date">
+        <small id="toDateHelp" class="form-text text-muted">請輸入YYYY-MM-DD</small>
+    </div>
+    <div class="form-inline col-md-2">
+        <button id="search" onclick="search()" type="button" class="btn btn-outline-primary mb-1">Search</button>
+    </div>
+</div>
 <table id="table1" class="display" style="width:100%">
     <thead>
         <tr>
@@ -14,6 +29,8 @@
             <th>Weight</th>
             <th>Amount</th>
             <th>Date</th>
+            <th>Category</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -24,6 +41,8 @@
             <td>{{ $order->weight }}</td>
             <td>{{ $order->amount }}</td>
             <td>{{ $order->date->format('Y-m-d') }}</td>
+            <td>{{ $order->catLabel }}</td>
+            <td>{{ $order->status }}</td>
             <td>
                 <button type="button" class="btn btn-warning btn-xs"
                     onclick="view(&quot;{{ url('recycle_orders', $order->id) }}&quot;)"><span
@@ -45,13 +64,43 @@
 
 @section('js')
 <script src="/js/jquery.dataTables.min.js"></script>
+<script src="/js/moment.js"></script>
 <script>
 $(document).ready(function() {
-    var table = $('#table1').DataTable({
-        searching: false,
+    table = $('#table1').DataTable({
+        searching: true,
     });
 
+    $.fn.dataTable.ext.search.push(
+    function(settings, data, dataIndex) {
+        var fromStr = $('#from_date').val();
+        var toStr = $('#to_date').val();
+        var date = new Date(data[3]);
+        date = new Date(date.toDateString());
+        if (isValid(fromStr) && isValid(toStr)) {
+            let from = getDate(fromStr, new Date(0));
+            let to = getDate(toStr, new Date());
+            return from <= date && date <= to;
+        } else {
+            alert("From/To date is invalid!");
+            return false;
+        }
+    });
 });
+
+function search() {
+    table.draw();
+}
+
+function getDate(dateStr, defDate) {
+    if (dateStr.trim() === "") return defDate;
+    return moment(dateStr, 'YYYY-MM-DD').toDate();
+}
+
+function isValid(dateStr) {
+    if (dateStr.trim() === "") return true;
+    return moment(dateStr, 'YYYY-MM-DD', true).isValid();
+}
 
 function view(url) {
     location.href = url;

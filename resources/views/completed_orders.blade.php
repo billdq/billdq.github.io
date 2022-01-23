@@ -3,36 +3,28 @@
 @section('title', 'Workflow')
 
 @section('content_header')
-<h1>Users</h1>
+<h1>Completed Orders</h1>
 @stop
 
 @section('content')
-<button id="create_user" onclick="createUser()" type="button" class="btn btn-outline-primary mb-1">Create User</button>
-
 <table id="table1" class="display" style="width:100%">
     <thead>
         <tr>
-            <th>User ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Admin?</th>
+            <th>Order No</th>
+            <th>Remarks</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($users as $user)
+        @foreach ($orders as $order)
         <tr>
-            <td>{{ $user->uid }}</td>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>{{ $user->is_admin ? "Yes" : "No" }}</td>
+            <td>{{ $order->order_no }}</td>
+            <td>{{ $order->remarks }}</td>
             <td>
                 <button type="button" class="btn btn-warning btn-xs"
-                    onclick="view(&quot;{{ url('users', $user->id) }}&quot;)"><span
-                        class="fa fa-eye" /></button>
+                    onclick="view(&quot;{{ url('orders', $order->id) }}&quot;)">編輯</button>
                 <button type="button" class="btn btn-warning btn-xs"
-                    onclick="del(&quot;{{ url('users', $user->id) }}&quot;)"><span
-                        class="fas fa-trash" /></button>
+                    onclick="del(&quot;{{ url('orders', $order->id) }}&quot;)"><span class="fas fa-trash" /></button>
             </td>
         </tr>
         @endforeach
@@ -55,10 +47,6 @@ $(document).ready(function() {
 
 });
 
-function createUser() {
-    location.href = '/create_user';
-}
-
 function view(url) {
     location.href = url;
 }
@@ -71,8 +59,8 @@ function del(url) {
             _token: '{{csrf_token()}}',
         },
         success: function(result) {
-            console.log('Delete response: ' + result);
-            location.href = '/users';
+            alert('Delete success!');
+            location.href = '/orders';
         }
     });
 }

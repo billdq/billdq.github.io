@@ -23,12 +23,15 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/create_order', 'OrderController@createOrder')->name('createOrder');
 Route::get('/orders', 'OrderController@index');
+Route::get('/completed_orders', 'OrderController@completed');
 Route::post('/orders', 'OrderController@store');
 Route::get('/orders/{id}', 'OrderController@show')->name('orders');
 Route::post('/orders/{id}', 'OrderController@update');
 Route::delete('/orders/{id}', 'OrderController@destroy');
 Route::get('/order_cat/{id}/qr_codes', 'OrderCatController@qrCodes');
 Route::get('/order_cat/{id}/qr_codes/print', 'OrderCatController@printQrCodes');
+Route::delete('/order_cat/{id}/qr_codes', 'QrCodeController@batchDelete');
+Route::get('/qr_codes', 'HomeController@allQrCodes');
 
 Route::get('/recycle_orders', 'RecycleOrderController@index');
 Route::post('/recycle_orders', 'RecycleOrderController@store');

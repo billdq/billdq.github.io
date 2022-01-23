@@ -28,7 +28,8 @@
     </div>
 
     <div class="col-md-8">
-        <button class="btn btn-primary float-right">Submit</button>
+        <button class="btn btn-primary float-right ml-1">Submit</button>
+        <button id="delete" type="button" class="btn btn-danger float-right">Delete</button>
     </div><br>
 
     <input type="hidden" name="no_of_cat" id="no_of_cat" value="1" />
@@ -89,6 +90,10 @@ $(document).ready(function() {
         resetCat();
     });
 
+    $("#delete").click(function() {
+        delOrder();
+    });
+
     $("form").submit(function() {
         try {
             if (!validate("#order_no", "Order No")) {
@@ -111,8 +116,10 @@ $(document).ready(function() {
 
     @if(isset($order))
     fillOrder();
+    $("#delete").prop('disabled', false);
     @else
     addCat();
+    $("#delete").prop('disabled', true);
     @endif
 });
 
@@ -154,7 +161,6 @@ function resetCat() {
 }
 
 @if(isset($order))
-
 function fillOrder() {
     $("#order_no").val("{{ $order->order_no }}");
     $("#remarks").val("{{ $order->remarks }}");
@@ -163,6 +169,20 @@ function fillOrder() {
     originalNoOfQr.push({{ $orderCat->no_of_qr_code }});
     @endforeach
     $("#no_of_cat_from_query").val("{{ count($orderCats) }}");
+}
+
+function delOrder() {
+    $.ajax({
+        url: "{{ url('orders', $order->id) }}",
+        type: 'DELETE',
+        data: {
+            _token: '{{csrf_token()}}',
+        },
+        success: function(result) {
+            alert('Delete success!');
+            location.href = '/orders';
+        }
+    });
 }
 @endif
 

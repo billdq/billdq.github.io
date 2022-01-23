@@ -64,10 +64,21 @@ class SystemConfigSeeder extends Seeder
         $cfg->save();
 
         $cfg = new SystemConfig();
+        $cfg->{"type"} = "STATUS";
+        $cfg->{"key"} = "B06";
+        $cfg->{"value"} = "已取機/已出機";
+        $cfg->save();
+
+        $cfg = new SystemConfig();
         $cfg->{"type"} = "RECYCLE_STATUS";
         $cfg->{"key"} = "B03";
         $cfg->{"value"} = "B03";
         $cfg->save();
 
+        $cfg = new SystemConfig();
+        $cfg->{"type"} = "COMPLETED_STATUS";
+        $cfg->{"key"} = "B06";
+        $cfg->{"value"} = "B06";
+        $cfg->save();
     }
 }

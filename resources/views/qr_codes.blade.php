@@ -10,6 +10,7 @@
 <button id="print_all" onclick="printAll()" type="button" class="btn btn-outline-primary mb-1">Print All</button>
 <button id="add_to_recycle" onclick="addToRecycle()" type="button" class="btn btn-outline-primary mb-1">Add to
     Recycle</button>
+<button id="batch_delete" onclick="batchDelete()" type="button" class="btn btn-outline-primary mb-1">Batch Delete</button>
 <table id="table1" class="display" style="width:100%">
     <thead>
         <tr>
@@ -32,7 +33,10 @@
             <td>{{ $qr->update_by }}</td>
             <td>{{ $qr->update_time }}</td>
             <td><button type="button" class="btn btn-warning btn-xs" onclick="view('{{ $qr->value }}')"><span
-                        class="fa fa-eye" /></button></td>
+                        class="fa fa-eye" /></button>
+                <button type="button" class="btn btn-warning btn-xs" onclick="del('{{ $qr->value }}')"><span
+                        class="fas fa-trash" /></button>
+            </td>
         </tr>
         @endforeach
     </tbody>
@@ -103,7 +107,7 @@ var table = null;
 
 $(document).ready(function() {
     table = $('#table1').DataTable({
-        searching: false,
+        searching: true,
     });
 
     $('#table1 tbody').on('click', 'tr', function() {
@@ -144,10 +148,38 @@ function addToRecycle() {
     $("#modal2").modal();
 }
 
+function batchDelete() {
+    var qrCodes = getSelected();
+    if (qrCodes.length > 0) {
+        submitDelete(qrCodes);
+    } else {
+        alert("No QR Code is selected!");
+    }
+}
+
 function view(code) {
     qrcode.clear();
     qrcode.makeCode(code);
     $("#modal1").modal();
+}
+
+function del(code) {
+    submitDelete([code]);
+}
+
+function submitDelete(qrCodes) {
+    $.ajax({
+        url: "{{ url('order_cat', $orderCat->id).'/qr_codes' }}",
+        type: 'DELETE',
+        data: {
+            qr_codes: qrCodes,
+            _token: '{{csrf_token()}}',
+        },
+        success: function(result) {
+            alert('Delete success!');
+            location.href = "{{ url('order_cat', $orderCat->id).'/qr_codes' }}";
+        }
+    });
 }
 
 function validateSelected() {
@@ -177,12 +209,7 @@ function addSelected() {
         title = $("#recycle_list option:selected").text();
     }
 
-    var a = table.rows('.selected');
-    var qrCodes = [];
-    a.every(function() {
-        qrCodes.push(this.data()[0]);
-    });
-
+    var qrCodes = getSelected();
     $.post("/recycle_orders", {
             id: recycleId,
             title: title,
@@ -197,6 +224,15 @@ function addSelected() {
                 alert("Failed to process, please contact system admin");
             }
         });
+}
+
+function getSelected() {
+    var a = table.rows('.selected');
+    var qrCodes = [];
+    a.every(function() {
+        qrCodes.push(this.data()[0]);
+    });
+    return qrCodes;
 }
 </script>
 @stop

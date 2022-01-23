@@ -7,6 +7,7 @@
 @stop
 
 @section('content')
+<button id="completed" onclick="completed()" type="button" class="btn btn-outline-primary mb-1">Completed Orders</button>
 <table id="table1" class="display" style="width:100%">
     <thead>
         <tr>
@@ -22,7 +23,7 @@
             <td>{{ $order->remarks }}</td>
             <td>
                 <button type="button" class="btn btn-warning btn-xs"
-                    onclick="view(&quot;{{ url('orders', $order->id) }}&quot;)"><span class="fa fa-eye" /></button>
+                    onclick="view(&quot;{{ url('orders', $order->id) }}&quot;)">編輯</button>
                 <button type="button" class="btn btn-warning btn-xs"
                     onclick="del(&quot;{{ url('orders', $order->id) }}&quot;)"><span class="fas fa-trash" /></button>
             </td>
@@ -42,13 +43,17 @@
 <script>
 $(document).ready(function() {
     var table = $('#table1').DataTable({
-        searching: false,
+        searching: true,
     });
 
 });
 
 function view(url) {
     location.href = url;
+}
+
+function completed() {
+    location.href = '/completed_orders';
 }
 
 function del(url) {
@@ -59,7 +64,8 @@ function del(url) {
             _token: '{{csrf_token()}}',
         },
         success: function(result) {
-            alert(result);
+            alert('Delete success!');
+            location.href = '/orders';
         }
     });
 }

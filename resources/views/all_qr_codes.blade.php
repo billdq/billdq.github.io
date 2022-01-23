@@ -11,7 +11,8 @@
     <thead>
         <tr>
             <th>Code ID</th>
-            <th>Recycle Order</th>
+            <th>Category</th>
+            <th>Order No</th>
             <th>Status</th>
             <th>Update By</th>
             <th>Update Time</th>
@@ -22,12 +23,14 @@
         @foreach ($qrCodes as $qr)
         <tr>
             <td>{{ $qr->value }}</td>
-            <td>{{ $order->title }}</td>
+            <td>{{ $qr->catLabel }}</td>
+            <td>{{ $qr->orderNo }}</td>
             <td>{{ $allStatus[$qr->status] }}</td>
             <td>{{ $qr->update_by }}</td>
             <td>{{ $qr->update_time }}</td>
             <td><button type="button" class="btn btn-warning btn-xs" onclick="view('{{ $qr->value }}')"><span
-                        class="fa fa-eye" /></button></td>
+                        class="fa fa-eye" /></button>
+            </td>
         </tr>
         @endforeach
     </tbody>
@@ -73,6 +76,7 @@ $(document).ready(function() {
     //$('#table1 tbody').on('click', 'tr', function() {
     //    $(this).toggleClass('selected');
     //});
+
 });
 
 function view(code) {
