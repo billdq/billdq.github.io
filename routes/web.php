@@ -39,7 +39,7 @@ Route::get('/recycle_orders/{id}', 'RecycleOrderController@show')->name('recycle
 Route::post('/recycle_orders/{id}', 'RecycleOrderController@update');
 Route::delete('/recycle_orders/{id}', 'RecycleOrderController@destroy');
 Route::get('/recycle_orders/{id}/qr_codes', 'RecycleOrderController@qrCodes');
-Route::get('/recycle_orders/{id}/print_qr_code', 'RecycleOrderController@printQrCode');
+Route::get('/recycle_orders/{id}/print_qr_code/{count}', 'RecycleOrderController@printQrCode');
 
 Route::group(['middleware' => ['can:is-admin']], function () {
     Route::get('/users', 'UserController@index');

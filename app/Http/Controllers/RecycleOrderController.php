@@ -119,10 +119,11 @@ class RecycleOrderController extends Controller
                                 'allStatus' => $allStatus]);
     }
 
-    public function printQrCode($id)
+    public function printQrCode($id, $count)
     {
         $order = RecycleOrder::where('id', $id)->first();
-        return view('print_qr_code', ['order' => $order]);
+        $this->genQrCode($order->qr_code);
+        return view('print_qr_code', ['order' => $order, 'count' => $count]);
     }
 
     private function getRcyCat($qr) {
@@ -139,5 +140,12 @@ class RecycleOrderController extends Controller
 
     private function getStatus($status) {
         return SystemConfig::getAllStatus()[$status];
+    }
+
+    private function genQrCode($qr) {
+        $file = public_path('qr/'.$qr.'.png');
+        if (!file_exists($file)) {
+            \QrCode::size(300)->format('png')->generate($qr, $file);
+        }
     }
 }

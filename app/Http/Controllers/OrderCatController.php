@@ -55,6 +55,7 @@ class OrderCatController extends Controller
         $qrCodes = QrCode::whereNull('recycle_order_id')
                     ->where('order_category_id', $id)
                     ->get();
+        $this->genQrCodes($qrCodes);
 
         $catLabel = SystemConfig::where('type', 'CAT')
                     ->where('key', $orderCat->{'category'})
@@ -68,5 +69,14 @@ class OrderCatController extends Controller
         return view('print_qr_codes', ['catLabel' => $catLabel,
                                 'qrCodes' => $qrCodes,
                                 'orderNo' => $orderNo]);
+    }
+
+    private function genQrCodes($qrCodes) {
+        foreach ($qrCodes as $qr) {
+            $file = public_path('qr/'.$qr->value.'.png');
+            if (!file_exists($file)) {
+                \QrCode::size(300)->format('png')->generate($qr->value, $file);
+            }
+        }
     }
 }

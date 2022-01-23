@@ -47,7 +47,8 @@
     </div>
 
     <div class="col-md-8">
-        <button id="qr_code_btn" type="button" class="btn btn-success float-right ml-3">QR Code</button>
+        <input type="text" name="no_of_qr" class="float-right ml-3 col-md-1" id="no_of_qr" placeholder="">
+        <button id="qr_code_btn" type="button" class="btn btn-success float-right ml-3">Print QR Code(s)</button>
         <button class="btn btn-primary float-right">Submit</button>
     </div><br>
 </form>
@@ -131,8 +132,20 @@ function validateDate() {
     return result;
 }
 
+function validateNoOfQr() {
+    noOfQr = $('#no_of_qr').val();
+    if (noOfQr.trim() === "" || isNaN(noOfQr)) {
+        alert("Please input a valid No. of QR Codes to Print! (Bottom right text box)");
+        return 0;
+    }
+    return parseInt(noOfQr);
+}
+
 function printQrCode() {
-    window.open("{{$order->id.'/print_qr_code'}}", '_blank');
+    count = validateNoOfQr();
+    if (count > 0) {
+        window.open("{{$order->id.'/print_qr_code/'}}"+count, '_blank');
+    }
 }
 </script>
 @stop
