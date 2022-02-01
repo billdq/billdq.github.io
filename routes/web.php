@@ -60,3 +60,4 @@ Route::group(['middleware' => ['can:is-admin']], function () {
 
 Route::post('/app_login', 'AppController@login');
 Route::post('/app_update_status', 'AppController@updateStatus');
+Route::post('/wati', 'HomeController@wati');

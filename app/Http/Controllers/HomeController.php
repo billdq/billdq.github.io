@@ -8,6 +8,7 @@ use App\Order;
 use App\OrderCategory;
 use App\QrCode;
 use App\RecycleOrder;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -19,7 +20,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('wati');
     }
 
     /**
@@ -31,6 +32,11 @@ class HomeController extends Controller
     {
         $cats = SystemConfig::where('type', 'CAT')->get();
         return view('home', ['cats' => $cats]);
+    }
+
+    public function wati(Request $request) {
+        Log::info('request', ['request' => $request->all()]);
+        return "success";
     }
 
     public function allQrCodes() {
