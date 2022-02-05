@@ -36,7 +36,13 @@ class HomeController extends Controller
 
     public function wati(Request $request) {
         Log::info('request', ['request' => $request->all()]);
+        if (isset($request->id)) {
+            $this->proc($request->all());
+        }
         return "success";
+    }
+    private function proc($data) {
+        error_log($data['waId']);
     }
 
     public function allQrCodes() {
@@ -57,7 +63,7 @@ class HomeController extends Controller
         foreach ($rOrders as $rcy) {
             $qrs = QrCode::where('recycle_order_id', $rcy->id)->get();
             $cat = $this->getRcyCat($qrs[0]);
-            $catLabel = $this->catLabel($cat->category);
+            $catLabel = $this->catLabel($cat);
             foreach ($qrs as $qr) {
                 $qr['catLabel'] = $catLabel;
                 $qr['orderNo'] = $rcy->title;
@@ -69,8 +75,7 @@ class HomeController extends Controller
     }
 
     private function getRcyCat($qr) {
-        $cat = OrderCategory::where('id', $qr->order_category_id-10000000)->first();
-        return $cat;
+        return $qr->category;
     }
 
     private function catLabel($category) {

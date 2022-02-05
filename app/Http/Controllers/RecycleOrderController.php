@@ -39,6 +39,7 @@ class RecycleOrderController extends Controller
         $id = $request->input('id');
         $title = $request->input('title');
         $qrCodes = $request->input('qr_codes');
+        $cat = $request->input('cat');
 
         if ($id == '-1') {
             $order = new RecycleOrder();
@@ -61,6 +62,7 @@ class RecycleOrderController extends Controller
             $orderCatId = $code->{'order_category_id'};
             $code->{'order_category_id'} = $code->{'order_category_id'} + 10000000;
             $code->{'recycle_order_id'} = $id;
+            $code->{'category'} = $cat;
             $code->save();
         }
 

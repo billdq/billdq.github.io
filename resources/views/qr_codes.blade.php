@@ -214,6 +214,7 @@ function addSelected() {
             id: recycleId,
             title: title,
             qr_codes: qrCodes,
+            cat: '{{$orderCat->category}}',
             _token: '{{csrf_token()}}'
         },
         function(data, status) {
