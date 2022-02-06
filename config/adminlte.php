@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => '明愛電腦工場追蹤系統',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -45,12 +45,12 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<font size="+0">明愛電腦工場追蹤系統</font>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'AdminLTE',
+    'logo_img_alt' => '明愛電腦工場追蹤系統',
 
     /*
     |--------------------------------------------------------------------------
@@ -242,37 +242,37 @@ return [
         //    'text' => 'search',
         //],
         [
-            'text' => 'Create Order',
+            'text' => '新增訂單',
             'url'  => 'create_order',
             'icon' => 'fas fa-plus',
             //'can'  => 'manage-blog',
         ],
         [
-            'text' => 'Orders',
+            'text' => '訂單列表',
             'url'  => 'orders',
             'icon' => 'fas fa-briefcase',
             //'can'  => 'manage-blog',
         ],
         [
-            'text' => 'Recycle Orders',
+            'text' => '出售回收商',
             'url'  => 'recycle_orders',
             'icon' => 'fas fa-recycle',
             //'can'  => 'manage-blog',
         ],
         [
-            'text' => 'QR Codes',
+            'text' => '己送出',
             'url'  => 'qr_codes',
             'icon' => 'fas fa-qrcode',
             //'can'  => 'manage-blog',
         ],
         [
-            'text' => 'Users',
+            'text' => '使用者管理',
             'url'  => 'users',
             'icon' => 'fas fa-users',
             'can'  => 'is-admin',
         ],
         [
-            'text' => 'Categories',
+            'text' => '創建回收類別',
             'url'  => 'cats',
             'icon' => 'fas fa-desktop',
             'can'  => 'is-admin',

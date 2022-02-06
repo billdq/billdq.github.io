@@ -168,18 +168,21 @@ function del(code) {
 }
 
 function submitDelete(qrCodes) {
-    $.ajax({
-        url: "{{ url('order_cat', $orderCat->id).'/qr_codes' }}",
-        type: 'DELETE',
-        data: {
-            qr_codes: qrCodes,
-            _token: '{{csrf_token()}}',
-        },
-        success: function(result) {
-            alert('Delete success!');
-            location.href = "{{ url('order_cat', $orderCat->id).'/qr_codes' }}";
-        }
-    });
+    let text = "Are you sure you want to delete this item?";
+    if (confirm(text)) {
+        $.ajax({
+            url: "{{ url('order_cat', $orderCat->id).'/qr_codes' }}",
+            type: 'DELETE',
+            data: {
+                qr_codes: qrCodes,
+                _token: '{{csrf_token()}}',
+            },
+            success: function(result) {
+                alert('Delete success!');
+                location.href = "{{ url('order_cat', $orderCat->id).'/qr_codes' }}";
+            }
+        });
+    }
 }
 
 function validateSelected() {

@@ -107,17 +107,20 @@ function view(url) {
 }
 
 function del(url) {
-    $.ajax({
-        url: url,
-        type: 'DELETE',
-        data: {
-            _token: '{{csrf_token()}}',
-        },
-        success: function(result) {
-            console.log('Delete response: ' + result);
-            location.href = '/recycle_orders';
-        }
-    });
+    let text = "Are you sure you want to delete this item?";
+    if (confirm(text)) {
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            data: {
+                _token: '{{csrf_token()}}',
+            },
+            success: function(result) {
+                console.log('Delete response: ' + result);
+                location.href = '/recycle_orders';
+            }
+        });
+    }
 }
 </script>
 @stop
