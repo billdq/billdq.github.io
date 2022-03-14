@@ -129,8 +129,9 @@ class RecycleOrderController extends Controller
     }
 
     private function getRcyCat($qr) {
-        $cat = OrderCategory::where('id', $qr->order_category_id-10000000)->first();
-        return $cat;
+        return $qr->category;
+        //$cat = OrderCategory::where('id', $qr->order_category_id-10000000)->first();
+        //return $cat;
     }
 
     private function getCatLabel($category) {
