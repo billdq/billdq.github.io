@@ -24,8 +24,7 @@ class RecycleOrderController extends Controller
         foreach ($orders as $order) {
             if (!isset($catLabel)) {
                 $qr = QrCode::where('recycle_order_id', $order->id)->first();
-                $cat = $this->getRcyCat($qr);
-                $catLabel = $this->getCatLabel($cat->category);
+                $catLabel = $this->getRcyCat($qr);
                 $status = $this->getStatus($qr->status);
             }
             $order['catLabel'] = $catLabel;
@@ -62,7 +61,7 @@ class RecycleOrderController extends Controller
             $orderCatId = $code->{'order_category_id'};
             $code->{'order_category_id'} = $code->{'order_category_id'} + 10000000;
             $code->{'recycle_order_id'} = $id;
-            $code->{'category'} = $cat;
+            $code->{'category'} = $this->getCatLabel($cat);
             $code->save();
         }
 
@@ -79,8 +78,7 @@ class RecycleOrderController extends Controller
     {
         $order = RecycleOrder::where('id', $id)->first();
         $qr = QrCode::where('recycle_order_id', $order->id)->first();
-        $cat = $this->getRcyCat($qr);
-        $order['catLabel'] = $this->getCatLabel($cat->category);
+        $order['catLabel'] = $this->getRcyCat($qr);
         $order['status'] = $this->getStatus($qr->status);
         return view('recycle_order', ['order' => $order]);
     }
@@ -130,8 +128,6 @@ class RecycleOrderController extends Controller
 
     private function getRcyCat($qr) {
         return $qr->category;
-        //$cat = OrderCategory::where('id', $qr->order_category_id-10000000)->first();
-        //return $cat;
     }
 
     private function getCatLabel($category) {

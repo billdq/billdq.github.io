@@ -62,8 +62,7 @@ class HomeController extends Controller
         $rOrders = RecycleOrder::all();
         foreach ($rOrders as $rcy) {
             $qrs = QrCode::where('recycle_order_id', $rcy->id)->get();
-            $cat = $this->getRcyCat($qrs[0]);
-            $catLabel = $this->catLabel($cat);
+            $catLabel = $this->getRcyCat($qrs[0]);
             foreach ($qrs as $qr) {
                 $qr['catLabel'] = $catLabel;
                 $qr['orderNo'] = $rcy->title;
