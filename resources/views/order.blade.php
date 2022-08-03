@@ -7,6 +7,11 @@
 @stop
 
 @section('content')
+@if(session()->has('message'))
+    <div class="alert alert-danger">
+        {{ session()->get('message') }}
+    </div>
+@endif
 <form action="{{ isset($order) ? url('orders').'/'.$order->id : url('orders') }}" method="POST">
     @csrf
     <div class="form-group">

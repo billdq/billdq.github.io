@@ -30,6 +30,12 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
+        $order = Order::where('order_no', $request->input('order_no'))->first();
+
+        if ($order) {
+            return redirect()->back()->with('message', 'Order No 已經存在, 請另創新 Order No!');
+        }
+
         $order = Order::create($request->all());
 
         for ($i = 1; $i <= intval($request->input("no_of_cat")); $i++) {

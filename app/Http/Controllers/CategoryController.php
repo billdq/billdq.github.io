@@ -25,6 +25,13 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+        $cat = SystemConfig::where('type', 'CAT')
+                ->where('key', $request->input('key'))->first();
+
+        if ($cat) {
+            return redirect()->back()->with('message', 'Category Key 已經存在, 請另創新 Key!');
+        }
+
         $config = new SystemConfig();
         $config->{'type'} = 'CAT';
         $config->{'key'} = $request->input('key');
